@@ -36,7 +36,7 @@ class User(db.Model,UserMixin):
         self.totp_secret = base64.b32encode(os.urandom(10)).decode('utf-8')
 
     def get_totp_uri(self):
-        return 'otpauth://totp/2FA-Demo:{0}?secret={1}&issuer=2FA-Demo'.format(self.email, self.totp_secret)
+        return 'otpauth://totp/fnote-taking:{0}?secret={1}&issuer=fnote-taking'.format(self.email, self.totp_secret)
     
     def verify_totp(self, token):
         return otp.valid_totp(token, self.totp_secret)
