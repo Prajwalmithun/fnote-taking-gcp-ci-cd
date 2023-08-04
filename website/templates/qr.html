@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-4">
+        <h1>Scan the QR Code Below</h1>
+        <p>
+            <img id="generate-qr" src="{{ url_for('auth.generate_qr') }}" alt="QR Code" />
+        </p>
+        <p>
+            Once scanned, you can <a class="btn btn-primary" href="{{ url_for('auth.login') }}">Login</a>
+            <!-- <button type="submit" class="btn btn-primary"> Submit </button> -->
+        </p>
+    </div>
+</div>
+
+
+{% endblock %}
