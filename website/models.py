@@ -25,3 +25,17 @@ class User(db.Model,UserMixin):
     firstName = db.Column(db.String(150))
     password = db.Column(db.String(150))
     notes = db.relationship('Note')         # didnt understand
+    
+    totp_secret = db.Column(db.String(16))
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.totp_secret = base64.b32encode(os.urandom(10)).decode('utf-8')
+
+    def get_totp_uri(self):
+        return 'otpauth://totp/fnote-taking:{0}?secret={1}&issuer=fnote-taking'.format(self.email, self.totp_secret)
+    
+    def verify_totp(self, token):
+        return otp.valid_totp(token, self.totp_secret)
+    
+
