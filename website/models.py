@@ -4,6 +4,9 @@ from enum import unique
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+import os
+import base64
+import onetimepass as otp
 
 # class == table
 # attributes == column
@@ -25,3 +28,16 @@ class User(db.Model,UserMixin):
     firstName = db.Column(db.String(150))
     password = db.Column(db.String(150))
     notes = db.relationship('Note')         # didnt understand
+    
+    totp_secret = db.Column(db.String(16))
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.totp_secret = base64.b32encode(os.urandom(10)).decode('utf-8')
+
+    def get_totp_uri(self):
+        return 'otpauth://totp/2FA-Demo:{0}?secret={1}&issuer=2FA-Demo'.format(self.email, self.totp_secret)
+    
+    def verify_totp(self, token):
+        return otp.valid_totp(token, self.totp_secret)
+    

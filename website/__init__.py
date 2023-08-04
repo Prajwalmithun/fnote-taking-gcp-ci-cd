@@ -4,6 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy  # for database
 from os import path
 from flask_login import LoginManager
+from flask_migrate import Migrate
 
 # creating database object
 db = SQLAlchemy()
@@ -14,7 +15,7 @@ def create_app():
     app = Flask(__name__)
     
     # encrypt the session data and cookies
-    app.config['SECRET_KEY'] = 'afsdhjksfadkjsfajhfajh'
+    app.config['SECRET_KEY'] = 'afsdhjksfadkjsfajhfajhg'
 
     # configuration database
     # we are using sqlite (basically a file that stores the data)
@@ -23,7 +24,7 @@ def create_app():
 
     # database initialising for our app (ie., informing our app to use this database)
     db.init_app(app)
-
+    # migrate = Migrate(app, db, command='migrate')
     
 
     # importing the blueprints(or endpoints)
